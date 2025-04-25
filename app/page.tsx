@@ -11,31 +11,18 @@ import { cyrillicToLatin, latinToCyrillic } from 'kaalin'
 export default function TextProcessor() {
   const [inputText, setInputText] = useState("")
   const [processedText, setProcessedText] = useState("")
+  const [selectedOption, setSelectedOption] = useState("latin")
   const { toast } = useToast()
-  // console.log(cyrillicToLatin('Ассалаўма әлейкум'))
-  // console.log(latinToCyrillic('Assalawma áleykum'))
 
   useEffect(() => {
     if (inputText) {
       try {
         let result = inputText
-        if (inputText.match(/^[\u0400-\u04FF]+$/)) {
-          // If the input text is in Cyrillic, convert to Latin
+        if (selectedOption === "latin") {
           result = cyrillicToLatin(inputText)
-        } else if (inputText.match(/^[a-zA-Z]+$/)) {
-          // If the input text is in Latin, convert to Cyrillic
+        } else if (selectedOption === "cyrillic") {
           result = latinToCyrillic(inputText)
-        } else {
-          // If the input text contains mixed characters, show an error message
-          toast({
-            title: "Invalid Input",
-            description: "Please enter text in either Cyrillic or Latin script.", 
-            variant: "destructive",
-            duration: 2000,
-          })
-          return
         }
-        // Set the processed text
         setProcessedText(result)
       } catch (error) {
         console.error("Error processing text:", error)
@@ -66,6 +53,9 @@ export default function TextProcessor() {
     }
   }
 
+  const handleChangeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-10 px-4">
@@ -83,25 +73,14 @@ export default function TextProcessor() {
                   <CardTitle>Input</CardTitle>
                   <CardDescription>Enter your text to be processed</CardDescription>
                 </div>
-                {/* <select
+                <select
                   className="p-2 border rounded-md"
-                  onChange={(e) => {
-                    if (inputText) {
-                      try {
-                        const result = e.target.value === 'cyrillic'
-                          ? latinToCyrillic(inputText)
-                          : cyrillicToLatin(inputText)
-                        setProcessedText(result)
-                      } catch (error) {
-                        console.error("Error processing text:", error)
-                        setProcessedText("Error processing text")
-                      }
-                    }
-                  }}
+                  value={selectedOption}
+                  onChange={handleChangeOption}
                 >
                   <option value="latin">To Latin</option>
                   <option value="cyrillic">To Cyrillic</option>
-                </select> */}
+                </select>
               </div>
             </CardHeader>
             <CardContent>
