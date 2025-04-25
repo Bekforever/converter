@@ -55,6 +55,10 @@ export default function TextProcessor() {
 
   const handleChangeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value)
+    const oldInputText = inputText
+    const oldProcessedText = processedText
+    setInputText(oldProcessedText)
+    setProcessedText(oldInputText)
   }
 
   return (
@@ -132,7 +136,7 @@ export default function TextProcessor() {
                 <h3 className="text-lg font-medium mb-2">Organization Info</h3>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center gap-2">
-                    <span className="font-medium">Location:</span> Uzbekistan
+                    <span className="font-medium">Location:</span> Republic of Karakalpakstan, Uzbekistan
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="font-medium">Website:</span>
